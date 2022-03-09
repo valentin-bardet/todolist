@@ -3,24 +3,6 @@ import 'task_preview.dart';
 import 'task_details.dart';
 import 'package:todolist/models/task.dart';
 
-// final tasks = data.tasks;
-
-// class TaskMaster extends StatelessWidget {
-//   const TaskMaster({Key? key, required this.tasks}) : super(key: key);
-
-//   final List<Task> tasks;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return ListView.builder(
-//       itemCount: tasks.length,
-//       itemBuilder: (context, index) {
-//         return TaskPreview(task: tasks[index]);
-//       },
-//     );
-//   }
-// }
-
 class TaskMaster extends StatefulWidget {
   const TaskMaster({Key? key, required this.tasks}) : super(key: key);
 
