@@ -20,7 +20,6 @@ class _AllTasksState extends State<AllTasks> {
   }
 
   @override
-  @override
   Widget build(BuildContext context) {
     return CupertinoApp(
       theme: const CupertinoThemeData(brightness: Brightness.light),

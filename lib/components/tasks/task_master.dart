@@ -13,6 +13,13 @@ class TaskMaster extends StatefulWidget {
 }
 
 class _TaskMasterState extends State<TaskMaster> {
+  late List<Task> tasks;
+  @override
+  void initState() {
+    super.initState();
+    tasks = widget.tasks;
+  }
+
   Task? selected; //product will be null initially
 
   void onTaskSelected(Task task) {
@@ -25,14 +32,27 @@ class _TaskMasterState extends State<TaskMaster> {
   void hideDetails() {
     setState(() {
       selected = null;
-      //when selectedProduct is null ProductDetails widget is hidden
     });
+  }
+
+  void deleteSelected(Task task) {
+    setState(() {
+      tasks.remove(task);
+      print("task deleted");
+      hideDetails();
+    });
+    // hideDetails();
   }
 
   //affichage conditionnel
   Widget _showDetailsWhenProductIsSelected() {
     return (selected != null)
-        ? TaskDetails(task: selected, onHide: hideDetails)
+        ? TaskDetails(
+            task: selected,
+            onHide: hideDetails,
+            onDelete: deleteSelected,
+            // onReload:,
+          )
         : Container();
   }
 
