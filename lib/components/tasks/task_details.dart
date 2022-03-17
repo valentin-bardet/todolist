@@ -1,21 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:todolist/models/task.dart';
-import 'package:cupertino_list_tile/cupertino_list_tile.dart';
+import 'package:provider/provider.dart';
+import 'package:todolist/data/tasks_collection.dart';
 
 // final tasks = data.tasks;
 
 class TaskDetails extends StatelessWidget {
-  const TaskDetails({
-    Key? key,
-    required this.task,
-    required this.onHide,
-    required this.onDelete,
-  }) : super(key: key);
-
-  final Task? task;
-  final Function onHide;
-  final Function onDelete;
-  // final Function onReload;
+  const TaskDetails({Key? key, required this.selected, required this.hide})
+      : super(key: key);
+  final Task selected;
+  final Function hide;
 
   @override
   Widget build(BuildContext context) {
@@ -27,30 +21,32 @@ class TaskDetails extends StatelessWidget {
           padding: const EdgeInsets.symmetric(
             vertical: 4,
           ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(task!.content),
-              Text(task!.createdAt.toString()),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CupertinoButton(
-                    child: const Icon(CupertinoIcons.delete_simple),
-                    onPressed: () => onDelete(task!),
-                  ),
-                  CupertinoButton(
-                    child: const Icon(CupertinoIcons.arrow_2_circlepath),
-                    onPressed: () => onHide(),
-                  ),
-                ],
-              ),
-              CupertinoButton(
-                child: const Icon(CupertinoIcons.clear_thick),
-                onPressed: () => onHide(),
-              ),
-            ],
-          ),
+          child: Consumer<TasksCollection>(builder: (context, tasks, child) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(selected.content),
+                Text(selected.createdAt.toString()),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    CupertinoButton(
+                      child: const Icon(CupertinoIcons.delete_simple),
+                      onPressed: () => tasks.delete(selected),
+                    ),
+                    CupertinoButton(
+                      child: const Icon(CupertinoIcons.arrow_2_circlepath),
+                      onPressed: () => hide(),
+                    ),
+                  ],
+                ),
+                CupertinoButton(
+                  child: const Icon(CupertinoIcons.clear_thick),
+                  onPressed: () => hide(),
+                ),
+              ],
+            );
+          }),
         ),
       ),
     );

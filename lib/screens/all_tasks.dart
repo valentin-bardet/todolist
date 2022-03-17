@@ -1,24 +1,15 @@
 import 'package:flutter/cupertino.dart';
-import 'package:todolist/models/task.dart';
 import '../components/tasks/task_master.dart';
+import 'package:provider/provider.dart';
+import 'package:todolist/data/tasks_collection.dart';
 
 class AllTasks extends StatefulWidget {
-  const AllTasks({Key? key, required this.tasks}) : super(key: key);
-
-  final List<Task> tasks;
-
+  const AllTasks({Key? key}) : super(key: key);
   @override
   State<AllTasks> createState() => _AllTasksState();
 }
 
 class _AllTasksState extends State<AllTasks> {
-  late List<Task> tasks;
-  @override
-  void initState() {
-    super.initState();
-    tasks = widget.tasks;
-  }
-
   @override
   Widget build(BuildContext context) {
     return CupertinoApp(
@@ -27,7 +18,14 @@ class _AllTasksState extends State<AllTasks> {
         navigationBar: const CupertinoNavigationBar(
           middle: Text('title'),
         ),
-        child: TaskMaster(tasks: tasks),
+        child: Consumer<TasksCollection>(
+          builder: (context, tasks, child) => Stack(
+            children: [
+              TaskMaster(),
+            ],
+          ),
+          // Build the expensive widget here.
+        ),
       ),
     );
   }

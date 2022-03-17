@@ -2,62 +2,40 @@ import 'package:flutter/cupertino.dart';
 import 'task_preview.dart';
 import 'task_details.dart';
 import 'package:todolist/models/task.dart';
+import 'package:provider/provider.dart';
+import 'package:todolist/data/tasks_collection.dart';
 
 class TaskMaster extends StatefulWidget {
-  const TaskMaster({Key? key, required this.tasks}) : super(key: key);
-
-  final List<Task> tasks;
+  const TaskMaster({Key? key}) : super(key: key);
 
   @override
   State<TaskMaster> createState() => _TaskMasterState();
 }
 
 class _TaskMasterState extends State<TaskMaster> {
-  late List<Task> tasks;
   @override
   void initState() {
     super.initState();
-    tasks = widget.tasks;
   }
 
-  Task? selected; //product will be null initially
-
+  Task? selected;
   void onTaskSelected(Task task) {
     setState(() {
       selected = task;
-      //when selectedProduct has a value, ProductDetails widget is displayed
     });
   }
 
-  void hideDetails() {
+  hideDetails() {
     setState(() {
       selected = null;
     });
   }
 
-  void deleteSelected(Task task) {
-    setState(() {
-      tasks.remove(task);
-      print("task deleted");
-      hideDetails();
-    });
-    // hideDetails();
-  }
-
   //affichage conditionnel
   Widget _showDetailsWhenProductIsSelected() {
     return (selected != null)
-        ? TaskDetails(
-            task: selected,
-            onHide: hideDetails,
-            onDelete: deleteSelected,
-            // onReload:,
-          )
+        ? TaskDetails(selected: selected!, hide: hideDetails)
         : Container();
-  }
-
-  bool _isSelected(int index) {
-    return selected == widget.tasks[index];
   }
 
   @override
@@ -67,12 +45,15 @@ class _TaskMasterState extends State<TaskMaster> {
         _showDetailsWhenProductIsSelected(),
         Expanded(
           child: ListView.builder(
-            itemCount: widget.tasks.length,
+            itemCount: Provider.of<TasksCollection>(context, listen: false)
+                .tasks
+                .length,
             itemBuilder: (context, index) {
               return TaskPreview(
-                task: widget.tasks[index],
+                task: Provider.of<TasksCollection>(context, listen: false)
+                    .tasks[index],
+                selected: selected,
                 onSelect: onTaskSelected,
-                selected: _isSelected(index),
               );
             },
           ),
