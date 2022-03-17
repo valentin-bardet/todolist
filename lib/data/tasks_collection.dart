@@ -4,9 +4,14 @@ import 'package:todolist/models/task.dart';
 
 class TasksCollection extends ChangeNotifier {
   final List<Task> tasks = data.tasks;
-
+  late Task? selected = null;
   void add(Task task) {
     tasks.add(task);
+    notifyListeners();
+  }
+
+  remove(Task task) {
+    tasks.remove(task);
     notifyListeners();
   }
 
@@ -16,24 +21,61 @@ class TasksCollection extends ChangeNotifier {
     notifyListeners();
   }
 
-  void delete(Task task) {
-    //print(task.content);
-    // var i = 0;
-    // var value = 0;
-    // for (var a in tasks) {
-    //   if (a == task) {
-    //     value = i;
-    //     print("value");
-    //     print(tasks[value].content);
-    //   }
-    //   i++;
-    // }
-    // tasks.remove(tasks[value]);
-    // print('removed');
-    // for (var a in tasks) {
-    //   print(a.content);
-    // }
-    tasks.remove(task);
+  Task? selectedOne() {
+    return selected;
+  }
+
+  deleteSelected() {
+    tasks.remove(selected);
+    print("task deleted");
+    notifyListeners();
+    hideDetails();
+  }
+
+  String contentSelected() {
+    return selected!.content;
+  }
+
+  String createdAtSelected() {
+    return selected!.createdAt.toString();
+  }
+
+  Task findAt(int index) {
+    return tasks[index];
+  }
+
+  int length() {
+    return tasks.length;
+  }
+
+  void onTaskSelected(Task task) {
+    selected = task;
+    notifyListeners();
+  }
+
+  void hideDetails() {
+    selected = null;
+    notifyListeners();
+  }
+
+  bool isSelected(Task task) {
+    if (selected == task) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  bool somthingSelected() {
+    if (selected != null) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  void onTapSelect(Task task) {
+    selected = task;
     notifyListeners();
   }
 
@@ -41,39 +83,4 @@ class TasksCollection extends ChangeNotifier {
     task.completed = !task.completed;
     notifyListeners();
   }
-
-  // String createdAtSelected() {
-  //   return selected!.createdAt.toString();
-  // }
-
-  Task findAt(int index) {
-    return tasks[index];
-  }
-
-  // int length() {
-  //   return tasks.length;
-  // }
-
-  // void onTaskSelected(Task task) {
-  //   selected = task;
-  //   notifyListeners();
-  // }
-
-  // void hideDetails() {
-  //   selected = null;
-  //   notifyListeners();
-  // }
-
-  // bool somthingSelected() {
-  //   if (selected != null) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
-
-  // void onTapSelect(Task task) {
-  //   selected = task;
-  //   notifyListeners();
-  // }
 }

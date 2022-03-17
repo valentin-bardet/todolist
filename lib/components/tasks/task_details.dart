@@ -6,10 +6,9 @@ import 'package:todolist/data/tasks_collection.dart';
 // final tasks = data.tasks;
 
 class TaskDetails extends StatelessWidget {
-  const TaskDetails({Key? key, required this.selected, required this.hide})
-      : super(key: key);
-  final Task selected;
-  final Function hide;
+  const TaskDetails({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,30 +18,30 @@ class TaskDetails extends StatelessWidget {
         margin: const EdgeInsets.only(top: 100),
         child: Padding(
           padding: const EdgeInsets.symmetric(
-            vertical: 4,
+            vertical: 0,
           ),
           child: Consumer<TasksCollection>(builder: (context, tasks, child) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(selected.content),
-                Text(selected.createdAt.toString()),
+                Text(tasks.contentSelected()),
+                Text(tasks.createdAtSelected()),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CupertinoButton(
                       child: const Icon(CupertinoIcons.delete_simple),
-                      onPressed: () => tasks.delete(selected),
+                      onPressed: () => tasks.deleteSelected(),
                     ),
                     CupertinoButton(
                       child: const Icon(CupertinoIcons.arrow_2_circlepath),
-                      onPressed: () => hide(),
+                      onPressed: () => tasks.deleteSelected(),
                     ),
                   ],
                 ),
                 CupertinoButton(
                   child: const Icon(CupertinoIcons.clear_thick),
-                  onPressed: () => hide(),
+                  onPressed: () => tasks.deleteSelected(),
                 ),
               ],
             );

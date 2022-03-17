@@ -14,28 +14,12 @@ class TaskMaster extends StatefulWidget {
 
 class _TaskMasterState extends State<TaskMaster> {
   @override
-  void initState() {
-    super.initState();
-  }
-
-  Task? selected;
-  void onTaskSelected(Task task) {
-    setState(() {
-      selected = task;
-    });
-  }
-
-  hideDetails() {
-    setState(() {
-      selected = null;
-    });
-  }
 
   //affichage conditionnel
   Widget _showDetailsWhenProductIsSelected() {
-    return (selected != null)
-        ? TaskDetails(selected: selected!, hide: hideDetails)
-        : Container();
+    return Consumer<TasksCollection>(builder: (context, tasks, child) {
+      return (tasks.selectedOne() != null) ? const TaskDetails() : Container();
+    });
   }
 
   @override
@@ -43,21 +27,18 @@ class _TaskMasterState extends State<TaskMaster> {
     return Column(
       children: [
         _showDetailsWhenProductIsSelected(),
-        Expanded(
-          child: ListView.builder(
-            itemCount: Provider.of<TasksCollection>(context, listen: false)
-                .tasks
-                .length,
-            itemBuilder: (context, index) {
-              return TaskPreview(
-                task: Provider.of<TasksCollection>(context, listen: false)
-                    .tasks[index],
-                selected: selected,
-                onSelect: onTaskSelected,
-              );
-            },
-          ),
-        ),
+        Consumer<TasksCollection>(builder: (context, tasks, child) {
+          return Expanded(
+            child: ListView.builder(
+              itemCount: tasks.length(),
+              itemBuilder: (context, index) {
+                return TaskPreview(
+                  task: tasks.findAt(index),
+                );
+              },
+            ),
+          );
+        }),
       ],
     );
   }
