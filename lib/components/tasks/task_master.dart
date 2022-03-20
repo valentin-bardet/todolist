@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'task_preview.dart';
 import 'task_details.dart';
 import 'package:todolist/models/task.dart';
+
 import 'package:provider/provider.dart';
 import 'package:todolist/data/tasks_collection.dart';
 

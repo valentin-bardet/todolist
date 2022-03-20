@@ -36,7 +36,7 @@ class _TaskPreviewState extends State<TaskPreview> {
         title: Text(
           task.content,
           style: tasks.isSelected(task)
-              ? const TextStyle(color: Color.fromARGB(255, 153, 0, 0))
+              ? const TextStyle(color: CupertinoColors.activeBlue)
               : const TextStyle(color: Color.fromARGB(255, 0, 0, 0)),
         ),
         // subtitle: const Text('test'),

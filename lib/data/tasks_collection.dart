@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:todolist/data/tasks.dart' as data;
 import 'package:todolist/models/task.dart';
+import 'package:todolist/screens/all_tasks.dart';
 
 class TasksCollection extends ChangeNotifier {
   final List<Task> tasks = data.tasks;
@@ -10,14 +11,27 @@ class TasksCollection extends ChangeNotifier {
     notifyListeners();
   }
 
-  remove(Task task) {
-    tasks.remove(task);
+  // remove(Task task) {
+  //   tasks.remove(task);
+  //   notifyListeners();
+  // }
+
+  void update(Task task, String text, context) {
+    var index = tasks.indexOf(task);
+    tasks[index].content = text;
+    Navigator.pop(context);
     notifyListeners();
   }
 
-  void update(Task task) {
-    var index = tasks.indexOf(task);
-    tasks[index] = task;
+  void create(String text, bool state) {
+    tasks.insert(
+        0,
+        Task(
+          1,
+          state,
+          text,
+          DateTime.now(),
+        ));
     notifyListeners();
   }
 
@@ -25,11 +39,27 @@ class TasksCollection extends ChangeNotifier {
     return selected;
   }
 
-  deleteSelected() {
-    tasks.remove(selected);
-    print("task deleted");
-    notifyListeners();
+  void delete(Task? task) {
+    tasks.remove(task);
     hideDetails();
+    notifyListeners();
+  }
+
+  deleteSelected() {
+    // print(selected.content);
+    // tasks.removeWhere((task) => task.id == selected!.id);
+    // print("task deleted");
+    // print(selected!.id);
+    // selected = null;
+    // tasks.remove(selected);
+    Task t = Task(
+      selected!.id,
+      selected!.completed,
+      selected!.content,
+      selected!.createdAt,
+    );
+    print(tasks.remove(t));
+    notifyListeners();
   }
 
   String contentSelected() {
@@ -66,6 +96,10 @@ class TasksCollection extends ChangeNotifier {
     }
   }
 
+  bool getCompletd() {
+    return selected!.completed;
+  }
+
   bool somthingSelected() {
     if (selected != null) {
       return true;
@@ -82,5 +116,14 @@ class TasksCollection extends ChangeNotifier {
   void check(Task task) {
     task.completed = !task.completed;
     notifyListeners();
+  }
+
+  void checkSeleted() {
+    selected!.completed = !selected!.completed;
+    notifyListeners();
+  }
+
+  bool isChecked() {
+    return selected!.completed;
   }
 }
